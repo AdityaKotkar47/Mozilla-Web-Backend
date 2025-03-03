@@ -9,6 +9,8 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+console.log("DB connected");
+
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +28,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 // app.use('/api/users', require('./routes/users'));
 // app.use('/api/posts', require('./routes/posts'));
 
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
