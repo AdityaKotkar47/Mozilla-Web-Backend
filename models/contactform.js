@@ -1,3 +1,6 @@
+
+const mongoose = require('mongoose');
+
 const contactFormSchema = new mongoose.Schema({
     name: {
       type: String,
@@ -16,3 +19,5 @@ const contactFormSchema = new mongoose.Schema({
       default: Date.now,
     },
   });
+
+module.exports = mongoose.model('ContactForm', contactFormSchema);

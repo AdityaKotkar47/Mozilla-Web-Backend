@@ -22,8 +22,7 @@ app.use(cors({
 app.get("/", (req, res) => {
   res.send("Server deployed and running on vercel.");
 });
-
-// You can add more route files here as your application grows
+app.use('/api/auth', require('./routes/authRoutes'));
 // app.use('/api/users', require('./routes/users'));
 // app.use('/api/posts', require('./routes/posts'));
 
