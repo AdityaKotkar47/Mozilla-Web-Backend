@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./DB/db');
 const imageUploadRoutes = require('./routes/imageUpload');
-
+const eventRoutes = require('./routes/eventRoutes');
 
 const app = express();
 
@@ -14,9 +14,9 @@ connectDB();
 console.log("DB connected");
 
 // Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.json({ limit: '50mb' })); // Increased limit for image uploads
+app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json({ limit: '50mb' }));
 
 app.use(cors({
     origin: 'http://localhost:3000'  //to be changed later to vercel url
@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
 });
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/upload', imageUploadRoutes);
+app.use('/api/events', eventRoutes);
 // app.use('/api/users', require('./routes/users'));
 // app.use('/api/posts', require('./routes/posts'));
 
