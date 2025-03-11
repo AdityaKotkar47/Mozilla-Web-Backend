@@ -5,6 +5,7 @@ const cors = require('cors');
 const connectDB = require('./DB/db');
 const imageUploadRoutes = require('./routes/imageUpload');
 const eventRoutes = require('./routes/eventRoutes');
+const blogRoutes = require('./routes/blogRoutes');
 
 const app = express();
 
@@ -30,7 +31,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/upload', imageUploadRoutes);
 app.use('/api/events', eventRoutes);
 // app.use('/api/users', require('./routes/users'));
-// app.use('/api/posts', require('./routes/posts'));
+app.use('/api/posts', blogRoutes);
 
 const port = process.env.PORT || 5000;
 
