@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./DB/db');
+const imageUploadRoutes = require('./routes/imageUpload');
+
 
 const app = express();
 
@@ -25,6 +27,7 @@ app.get("/", (req, res) => {
   res.send("Server deployed and running on vercel.");
 });
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/upload', imageUploadRoutes);
 // app.use('/api/users', require('./routes/users'));
 // app.use('/api/posts', require('./routes/posts'));
 
