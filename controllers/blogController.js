@@ -57,7 +57,7 @@ const createBlog = async (req, res) => {
             updatedAt: Date.now(),
         });
 
-        const savedBlog = newBlog.save();
+        const savedBlog = await newBlog.save();
 
         res.status(201).json({
             success: true,
@@ -74,8 +74,86 @@ const createBlog = async (req, res) => {
     }
 };
 
+const updateBlog = async (req, res) => {
+    try {
+        const { title, content, author, images } = req.body;
+
+        const existingBlog = await Blog.findById(req.params.id);
+
+        if (!existingBlog) {
+            return res.status(404).json({
+                success: false,
+                message: "Blog not found",
+            });
+        }
+
+        if (!title || !content || !author || !images) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide updated value for any of these: title, content, author, images"
+            });
+        }
+
+        const updatedData = {};
+        if (title) updatedData.title = title;
+        if (content) updatedData.content = content;
+        if (author) updatedData.author = author;
+        if (images) updatedData.images = images;
+        updatedData.updatedAt = Date.now();
+
+        const updatedBlog = await Blog.findByIdAndUpdate(
+            req.params.id,
+            updatedData,
+            { new: true, runValidators: true }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Blog updated successfully",
+            data: updatedBlog,
+        });
+    } catch (error) {
+        console.error("Error updating blog: ", error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message,
+        });
+    }
+};
+
+const deleteBlog = async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id);
+
+        if (!blog) {
+            return res.status(404).json({
+                success: false,
+                message: "Blog not found",
+            });
+        }
+
+        await Blog.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            success: true,
+            message: "Blog deleted successfully",
+            data: {},
+        });
+    } catch (error) {
+        console.error("Error deleting blog: ", error);
+        res.status(500).json({
+            success: false,
+            message: "Server Error",
+            error: error.message,
+        });
+    }
+};
+
 module.exports = {
     getAllBlogs,
     getBlogById,
     createBlog,
+    updateBlog,
+    deleteBlog,
 };
